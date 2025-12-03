@@ -2,6 +2,7 @@
 
 #include <Day1.h>
 #include <Day2.h>
+#include <Day3.h>
 
 void setup() {
   Serial.begin(115200);
@@ -10,8 +11,9 @@ void setup() {
     Serial.println("Serial is ready!");
   }
 
-  solve_day1();
-  solve_day2();
+  // solve_day1();
+  // solve_day2();
+  solve_day3();
   Serial.println("Done!");
 }
 
