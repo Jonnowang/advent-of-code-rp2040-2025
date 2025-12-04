@@ -2,7 +2,21 @@
 #include <Day3.h>
 #include <Day3Data.h>
 
+#include <etl/algorithm.h>
 #include <etl/string.h>
+#include <etl/vector.h>
+
+long long ipow(int base, int exp) {
+  long long result = 1;
+  while (exp > 0) {
+    if (exp % 2 == 1)
+      result *= base;
+
+    base *= base;
+    exp /= 2;
+  }
+  return result;
+}
 
 int solve_day3_part1() {
   etl::string<101> buffer;
@@ -42,10 +56,56 @@ int solve_day3_part1() {
   return total_joltage;
 }
 
-int solve_day3_part2() { return 0; }
+long long solve_day3_part2() {
+  etl::string<101> buffer;
+  long long total_joltage = 0;
+
+  for (const char *p = day3_data; *p != 0; p++) {
+    char c = *p;
+
+    if (c == '\n') {
+      etl::vector<int, 12> largest;
+      if (buffer.size() >= 12) {
+        etl::transform(buffer.end() - 12, buffer.end(),
+                       etl::back_inserter(largest),
+                       [](char c) { return c - '0'; });
+      }
+
+      // Skip last 12 since we already pre-initialised the largest vector
+      for (auto it = buffer.rbegin() + 12; it != buffer.rend(); ++it) {
+        const char cur = *it;
+        if (cur >= '0' && cur <= '9') {
+          int current_value = cur - '0';
+
+          for (auto l = largest.begin(); l != largest.end(); ++l) {
+            if (current_value < *l) {
+              break;
+            }
+            int temp = current_value;
+            current_value = *l;
+            *l = temp;
+          }
+        }
+      }
+
+      for (auto i = 0; i != largest.size(); ++i) {
+        total_joltage += largest[i] * ipow(10, 11 - i);
+      }
+      buffer = "";
+    } else {
+      buffer += c;
+    }
+  }
+
+  return total_joltage;
+}
 
 void solve_day3() {
   const int part1_ans = solve_day3_part1();
+  const long long part2_ans = solve_day3_part2();
+
   Serial.print("Day 3 Part 1 Solution: ");
   Serial.println(part1_ans);
+  Serial.print("Day 3 Part 2 Solution: ");
+  Serial.println(part2_ans);
 }
