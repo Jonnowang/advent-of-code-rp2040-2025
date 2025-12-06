@@ -6,7 +6,7 @@
 #include <etl/string.h>
 #include <etl/to_arithmetic.h>
 
-long long ipow(int base, int exp) {
+static long long ipow(int base, int exp) {
   long long result = 1;
   while (exp > 0) {
     if (exp % 2 == 1)
@@ -90,6 +90,10 @@ long long solve_day2_part2() { return 0; }
 
 void solve_day2() {
   const long long part1_ans = solve_day2_part1();
+  const long long part2_ans = solve_day2_part2();
+
   Serial.print("Day 2 Part 1 Solution: ");
   Serial.println(part1_ans);
+  Serial.print("Day 2 Part 2 Solution: ");
+  Serial.println(part2_ans);
 }

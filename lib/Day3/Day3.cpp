@@ -6,7 +6,7 @@
 #include <etl/string.h>
 #include <etl/vector.h>
 
-long long ipow(int base, int exp) {
+static long long ipow(int base, int exp) {
   long long result = 1;
   while (exp > 0) {
     if (exp % 2 == 1)
