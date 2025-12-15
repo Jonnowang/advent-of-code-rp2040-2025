@@ -89,11 +89,15 @@ long long solve_day2_part1() {
 long long solve_day2_part2() { return 0; }
 
 void solve_day2() {
-  const long long part1_ans = solve_day2_part1();
-  const long long part2_ans = solve_day2_part2();
-
+  unsigned long start_time = millis();
+  long long part1_ans = solve_day2_part1();
   Serial.print("Day 2 Part 1 Solution: ");
-  Serial.println(part1_ans);
+  Serial.print(part1_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+
+  start_time = millis();
+  long long part2_ans = solve_day2_part2();
   Serial.print("Day 2 Part 2 Solution: ");
-  Serial.println(part2_ans);
+  Serial.print(part2_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
 }

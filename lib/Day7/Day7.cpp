@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <Day7.h>
 #include <Day7Data.h>
+#include <SharedMemory.h>
+#include <new>
 
 #include <etl/algorithm.h>
 #include <etl/map.h>
@@ -10,7 +12,10 @@
 #include <etl/vector.h>
 
 int solve_day7_part1() {
-  etl::vector<etl::string<150>, 300> data;
+  using DataVec = etl::vector<etl::string<150>, 300>;
+  StaticMemoryBuffer<DataVec> data_wrapper;
+  auto& data = *data_wrapper;
+
   etl::string<150> buffer;
   etl::set<int, 150> split_idxs;
 
@@ -55,7 +60,10 @@ int solve_day7_part1() {
 }
 
 long long solve_day7_part2() {
-  etl::vector<etl::string<150>, 300> data;
+  using DataVec = etl::vector<etl::string<150>, 300>;
+  StaticMemoryBuffer<DataVec> data_wrapper;
+  auto& data = *data_wrapper;
+
   etl::string<150> buffer;
   etl::map<int, long long, 150> split_idxs;
   for (int i = 0; i < 150; ++i) {
@@ -111,11 +119,15 @@ long long solve_day7_part2() {
 }
 
 void solve_day7() {
-  const int part1_ans = solve_day7_part1();
-  const long long part2_ans = solve_day7_part2();
-
+  unsigned long start_time = millis();
+  int part1_ans = solve_day7_part1();
   Serial.print("Day 7 Part 1 Solution: ");
-  Serial.println(part1_ans);
+  Serial.print(part1_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+
+  start_time = millis();
+  long long part2_ans = solve_day7_part2();
   Serial.print("Day 7 Part 2 Solution: ");
-  Serial.println(part2_ans);
+  Serial.print(part2_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
 }

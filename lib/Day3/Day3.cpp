@@ -101,11 +101,15 @@ long long solve_day3_part2() {
 }
 
 void solve_day3() {
-  const int part1_ans = solve_day3_part1();
-  const long long part2_ans = solve_day3_part2();
-
+  unsigned long start_time = millis();
+  int part1_ans = solve_day3_part1();
   Serial.print("Day 3 Part 1 Solution: ");
-  Serial.println(part1_ans);
+  Serial.print(part1_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+
+  start_time = millis();
+  long long part2_ans = solve_day3_part2();
   Serial.print("Day 3 Part 2 Solution: ");
-  Serial.println(part2_ans);
+  Serial.print(part2_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
 }

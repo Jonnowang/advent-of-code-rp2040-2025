@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <Day5.h>
 #include <Day5Data.h>
+#include <SharedMemory.h>
+#include <new>
 
 #include <etl/algorithm.h>
 #include <etl/string.h>
@@ -8,8 +10,12 @@
 #include <etl/vector.h>
 
 int solve_day5_part1() {
-  etl::vector<etl::pair<long long, long long>, 200> intervals;
-  etl::vector<long long, 1000> ingredients;
+  struct Data {
+    etl::vector<etl::pair<long long, long long>, 200> intervals;
+    etl::vector<long long, 1000> ingredients;
+  };
+  StaticMemoryBuffer<Data> data_wrapper;
+  auto &data = *data_wrapper;
 
   etl::string<32> buffer;
   etl::pair<long long, long long> interval_buf = {};
@@ -23,7 +29,7 @@ int solve_day5_part1() {
 
     if (finished_constructing_intervals) {
       if (c == '\n') {
-        ingredients.push_back(etl::to_arithmetic<long long>(buffer));
+        data.ingredients.push_back(etl::to_arithmetic<long long>(buffer));
         buffer = "";
       } else {
         buffer += c;
@@ -33,7 +39,7 @@ int solve_day5_part1() {
 
     if (c == '\n') {
       interval_buf.second = etl::to_arithmetic<long long>(buffer);
-      intervals.push_back(interval_buf);
+      data.intervals.push_back(interval_buf);
 
       if (p[1] == '\n') {
         finished_constructing_intervals = true;
@@ -49,8 +55,8 @@ int solve_day5_part1() {
   }
 
   // etl::sort(intervals.begin(), intervals.end());
-  for (const auto &item : ingredients) {
-    for (const auto &interval : intervals) {
+  for (const auto &item : data.ingredients) {
+    for (const auto &interval : data.intervals) {
       if (item >= interval.first && item <= interval.second) {
         fresh_count++;
         break;
@@ -62,7 +68,9 @@ int solve_day5_part1() {
 }
 
 long long solve_day5_part2() {
-  etl::vector<etl::pair<long long, long long>, 200> intervals;
+  using Intervals = etl::vector<etl::pair<long long, long long>, 200>;
+  StaticMemoryBuffer<Intervals> intervals_wrapper;
+  auto &intervals = *intervals_wrapper;
 
   etl::string<32> buffer;
   etl::pair<long long, long long> interval_buf = {};
@@ -110,11 +118,15 @@ long long solve_day5_part2() {
 }
 
 void solve_day5() {
-  const int part1_ans = solve_day5_part1();
-  const long long part2_ans = solve_day5_part2();
-
+  unsigned long start_time = millis();
+  int part1_ans = solve_day5_part1();
   Serial.print("Day 5 Part 1 Solution: ");
-  Serial.println(part1_ans);
+  Serial.print(part1_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+
+  start_time = millis();
+  long long part2_ans = solve_day5_part2();
   Serial.print("Day 5 Part 2 Solution: ");
-  Serial.println(part2_ans);
+  Serial.print(part2_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
 }

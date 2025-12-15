@@ -90,12 +90,15 @@ int solve_day1_part2() {
 }
 
 void solve_day1() {
+  unsigned long start_time = millis();
   int part1_solution = solve_day1_part1();
-  int part2_solution = solve_day1_part2();
-
   Serial.print("Day 1 Part 1 Solution: ");
-  Serial.println(part1_solution);
+  Serial.print(part1_solution);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
 
+  start_time = millis();
+  int part2_solution = solve_day1_part2();
   Serial.print("Day 1 Part 2 Solution: ");
-  Serial.println(part2_solution);
+  Serial.print(part2_solution);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
 }

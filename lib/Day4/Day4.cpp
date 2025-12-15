@@ -1,13 +1,17 @@
 #include <Arduino.h>
 #include <Day4.h>
 #include <Day4Data.h>
+#include <SharedMemory.h>
+#include <new>
 
 #include <etl/algorithm.h>
 #include <etl/string.h>
 #include <etl/vector.h>
 
 int solve_day4_part1() {
-  etl::vector<etl::string<136>, 136> roll_array;
+  using RollArray = etl::vector<etl::string<136>, 136>;
+  StaticMemoryBuffer<RollArray> roll_array_wrapper;
+  auto &roll_array = *roll_array_wrapper;
   etl::string<136> buffer;
 
   int movable_rolls = 0;
@@ -60,7 +64,9 @@ int solve_day4_part1() {
 }
 
 int solve_day4_part2() {
-  etl::vector<etl::string<136>, 136> roll_array;
+  using RollArray = etl::vector<etl::string<136>, 136>;
+  StaticMemoryBuffer<RollArray> roll_array_wrapper;
+  auto &roll_array = *roll_array_wrapper;
   etl::string<136> buffer;
 
   int movable_rolls = 0;
@@ -110,8 +116,9 @@ int solve_day4_part2() {
         if (cnt_adj_rolls < 4) {
           movable_rolls++;
           moved++;
-          // Technically should wait until full loop to remove but it's fine since
-          // it would only apply to things which are removeable in the next loop anyways
+          // Technically should wait until full loop to remove but it's fine
+          // since it would only apply to things which are removeable in the
+          // next loop anyways
           roll_array[i][j] = '.';
         }
       }
@@ -122,11 +129,15 @@ int solve_day4_part2() {
 }
 
 void solve_day4() {
-  const int part1_ans = solve_day4_part1();
-  const int part2_ans = solve_day4_part2();
-
+  unsigned long start_time = millis();
+  int part1_ans = solve_day4_part1();
   Serial.print("Day 4 Part 1 Solution: ");
-  Serial.println(part1_ans);
+  Serial.print(part1_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+
+  start_time = millis();
+  int part2_ans = solve_day4_part2();
   Serial.print("Day 4 Part 2 Solution: ");
-  Serial.println(part2_ans);
+  Serial.print(part2_ans);
+  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
 }
