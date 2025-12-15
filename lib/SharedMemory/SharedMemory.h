@@ -13,6 +13,8 @@ extern uint8_t static_memory_buffer[SHARED_BUFFER_SIZE];
 template <typename T>
 class StaticMemoryBuffer {
 public:
+  static_assert(sizeof(T) <= SHARED_BUFFER_SIZE, "Object size exceeds the static memory buffer size.");
+
   template <typename... Args>
   StaticMemoryBuffer(Args&&... args) {
     instance = new (static_memory_buffer) T(std::forward<Args>(args)...);
