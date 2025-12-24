@@ -6,7 +6,7 @@
 #include <new>
 #include <utility>
 
-constexpr size_t SHARED_BUFFER_SIZE = 96 * 1024; // 96KB
+constexpr size_t SHARED_BUFFER_SIZE = 128 * 1024; // 128KB
 
 extern uint8_t static_memory_buffer[SHARED_BUFFER_SIZE];
 
