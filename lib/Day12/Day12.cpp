@@ -7,6 +7,8 @@
 #include <etl/to_arithmetic.h>
 #include <etl/vector.h>
 
+namespace {
+
 using PresentShapes = etl::vector<etl::vector<bool, 3>, 3>;
 using Presents = etl::vector<PresentShapes, 6>;
 
@@ -22,6 +24,8 @@ struct Data {
   Presents presents;
   Regions regions;
 };
+
+} // namespace
 
 long long solve_day12_part1() {
   StaticMemoryBuffer<Data> mem_ptr;

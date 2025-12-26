@@ -7,6 +7,8 @@
 #include <etl/multimap.h>
 #include <etl/string.h>
 
+namespace {
+
 using ServerNode = etl::string<3>;
 using ServerMap = etl::multimap<ServerNode, ServerNode, 1650>;
 
@@ -40,6 +42,8 @@ struct Data {
   ServerMap server_map;
   BfsQueue current_queue;
 };
+
+} // namespace
 
 long long solve_day11_part1() {
   StaticMemoryBuffer<Data> mem_ptr;

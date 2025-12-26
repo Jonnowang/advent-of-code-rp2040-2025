@@ -3,12 +3,17 @@
 #include <Day10Data.h>
 #include <SharedMemory.h>
 
+#include <etl/bitset.h>
 #include <etl/map.h>
 #include <etl/queue.h>
 #include <etl/set.h>
 #include <etl/string.h>
 #include <etl/to_arithmetic.h>
 #include <etl/vector.h>
+
+using namespace etl;
+
+namespace {
 
 using State = etl::vector<bool, 10>;
 using JoltageState = etl::vector<int16_t, 10>;
@@ -52,7 +57,18 @@ struct Data {
   JoltageQueue joltage_queue;
   Layer current_layer;
   Layer next_layer;
+  etl::bitset<1024> visited_states;
 };
+
+uint16_t state_to_int(const State &state) {
+  uint16_t idx = 0;
+  for (size_t i = 0; i < state.size(); ++i) {
+    if (state[i]) {
+      idx |= (1 << i);
+    }
+  }
+  return idx;
+}
 
 bool is_all_zero(const State &state) {
   for (auto bit : state) {
@@ -87,6 +103,7 @@ void reset_solver_state(Data &data, SwitchArray &switches) {
   }
   data.current_layer.clear();
   data.next_layer.clear();
+  data.visited_states.reset();
   switches.clear();
 }
 
@@ -128,7 +145,11 @@ long long find_shortest_path_to_zero(Data &data, const SwitchArray &switches) {
           return steps + 1;
         }
 
-        data.bfs_queue.push({new_state, (int8_t)i, {}});
+        uint16_t state_idx = state_to_int(new_state);
+        if (!data.visited_states.test(state_idx)) {
+          data.visited_states.set(state_idx);
+          data.bfs_queue.push({new_state, (int8_t)i, {}});
+        }
       }
     }
     steps++;
@@ -233,6 +254,8 @@ long long solve_iterative(Data &data, const SwitchArray &switches,
   return min_solution;
 }
 
+} // namespace
+
 long long solve_day10_part1() {
   StaticMemoryBuffer<Data> mem_ptr;
   auto &data = *mem_ptr;
@@ -252,6 +275,8 @@ long long solve_day10_part1() {
     } else if (*p == ']') {
       // Push initial state to queue
       data.bfs_queue.push({state_buf, -1, {}});
+      data.visited_states.reset();
+      data.visited_states.set(state_to_int(state_buf));
       state_buf.clear();
     } else if (*p == '\n') {
       long long res = find_shortest_path_to_zero(data, switches);
@@ -286,7 +311,7 @@ long long solve_day10_part2() {
   bool parsing_switch = false;
   bool joltage_switch = false;
 
-  for (const char *p = day10_test; *p; p++) {
+  for (const char *p = day10_data; *p; p++) {
     if (*p == '\n') {
       long long res = solve_iterative(data, switches, initial_joltage_state);
       total_shortest += res;
