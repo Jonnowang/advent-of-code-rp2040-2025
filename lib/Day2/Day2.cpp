@@ -86,7 +86,62 @@ long long solve_day2_part1() {
   return invalid_sum;
 }
 
-long long solve_day2_part2() { return 0; }
+long long solve_day2_part2() {
+  etl::string<32> buffer;
+  etl::string<16> nums[2];
+  int idx = 0;
+  long long invalid_sum = 0;
+
+  auto is_invalid = [](long long n) -> bool {
+    char buf[32];
+    sprintf(buf, "%lld", n);
+    size_t len = strlen(buf);
+
+    for (size_t sub_len = 1; sub_len <= len / 2; sub_len++) {
+      if (len % sub_len == 0) {
+        bool match = true;
+        for (size_t i = sub_len; i < len; i++) {
+          if (buf[i] != buf[i % sub_len]) {
+            match = false;
+            break;
+          }
+        }
+        if (match) return true;
+      }
+    }
+    return false;
+  };
+
+  auto compute_invalid = [&]() {
+    long long start = atoll(nums[0].c_str());
+    long long end = atoll(nums[1].c_str());
+
+    for (long long i = start; i <= end; i++) {
+      if (is_invalid(i)) {
+        invalid_sum += i;
+      }
+    }
+  };
+
+  for (const char *p = day2_data; *p != 0; p++) {
+    char c = *p;
+
+    if (isDigit(c)) {
+      buffer += c;
+    } else if (buffer.length() > 0) {
+      nums[idx] = buffer;
+      idx++;
+      buffer = "";
+
+      if (idx == 2) {
+        compute_invalid();
+        idx = 0;
+      }
+    }
+  }
+
+  return invalid_sum;
+}
 
 void solve_day2() {
   unsigned long start_time = millis();
