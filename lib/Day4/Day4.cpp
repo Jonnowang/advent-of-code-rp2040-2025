@@ -2,7 +2,6 @@
 #include <Day4.h>
 #include <Day4Data.h>
 #include <SharedMemory.h>
-#include <new>
 
 #include <etl/algorithm.h>
 #include <etl/string.h>

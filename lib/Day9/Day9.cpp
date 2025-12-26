@@ -2,7 +2,6 @@
 #include <Day9.h>
 #include <Day9Data.h>
 #include <SharedMemory.h>
-#include <new>
 
 #include <etl/algorithm.h>
 #include <etl/map.h>

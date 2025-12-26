@@ -2,7 +2,6 @@
 #include <Day10.h>
 #include <Day10Data.h>
 #include <SharedMemory.h>
-#include <new>
 
 #include <etl/map.h>
 #include <etl/queue.h>

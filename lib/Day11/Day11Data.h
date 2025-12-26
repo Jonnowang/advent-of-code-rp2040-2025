@@ -1,16 +1,19 @@
 #ifndef DAY11_DATA_H
 #define DAY11_DATA_H
 
-const char *day11_test = R"(aaa: you hhh
-you: bbb ccc
-bbb: ddd eee
-ccc: ddd eee fff
-ddd: ggg
-eee: out
-fff: out
+const char *day11_test = R"(svr: aaa bbb
+aaa: fft
+fft: ccc
+bbb: tty
+tty: ccc
+ccc: ddd eee
+ddd: hub
+hub: fff
+eee: dac
+dac: fff
+fff: ggg hhh
 ggg: out
-hhh: ccc fff iii
-iii: out
+hhh: out
 )";
 
 const char *day11_data = R"(fxp: udl vii hgb qmy

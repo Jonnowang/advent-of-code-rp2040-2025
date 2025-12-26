@@ -12,6 +12,7 @@
 #include <Day9.h>
 #include <Day10.h>
 #include <Day11.h>
+#include <Day12.h>
 
 void setup() {
   Serial.begin(115200);
@@ -20,17 +21,18 @@ void setup() {
     Serial.println("Serial is ready!");
   }
 
-  // solve_day1();
-  // solve_day2();
-  // solve_day3();
-  // solve_day4();
-  // solve_day5();
-  // solve_day6();
-  // solve_day7();
-  // solve_day8();
-  // solve_day9();
-  // solve_day10();
+  solve_day1();
+  solve_day2();
+  solve_day3();
+  solve_day4();
+  solve_day5();
+  solve_day6();
+  solve_day7();
+  solve_day8();
+  solve_day9();
+  solve_day10();
   solve_day11();
+  solve_day12();
   Serial.println("Done!");
 }
 
