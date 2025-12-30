@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-int solve_day8_part1();
-int solve_day8_part2();
+long long solve_day8_part1();
+long long solve_day8_part2();
 
 void solve_day8();
 

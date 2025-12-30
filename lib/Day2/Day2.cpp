@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Day2.h>
 #include <Day2Data.h>
+#include <Utils.h>
 
 #include <algorithm>
 #include <etl/string.h>
@@ -146,13 +147,9 @@ long long solve_day2_part2() {
 void solve_day2() {
   unsigned long start_time = millis();
   long long part1_ans = solve_day2_part1();
-  Serial.print("Day 2 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(2, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
   long long part2_ans = solve_day2_part2();
-  Serial.print("Day 2 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(2, 2, part2_ans, millis() - start_time);
 }

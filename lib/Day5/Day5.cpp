@@ -2,13 +2,14 @@
 #include <Day5.h>
 #include <Day5Data.h>
 #include <SharedMemory.h>
+#include <Utils.h>
 
 #include <etl/algorithm.h>
 #include <etl/string.h>
 #include <etl/to_arithmetic.h>
 #include <etl/vector.h>
 
-int solve_day5_part1() {
+long long solve_day5_part1() {
   struct Data {
     etl::vector<etl::pair<long long, long long>, 200> intervals;
     etl::vector<long long, 1000> ingredients;
@@ -19,7 +20,7 @@ int solve_day5_part1() {
   etl::string<32> buffer;
   etl::pair<long long, long long> interval_buf = {};
 
-  int fresh_count = 0;
+  long long fresh_count = 0;
 
   bool finished_constructing_intervals = false;
 
@@ -118,14 +119,10 @@ long long solve_day5_part2() {
 
 void solve_day5() {
   unsigned long start_time = millis();
-  int part1_ans = solve_day5_part1();
-  Serial.print("Day 5 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part1_ans = solve_day5_part1();
+  print_and_send_solution(5, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
   long long part2_ans = solve_day5_part2();
-  Serial.print("Day 5 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(5, 2, part2_ans, millis() - start_time);
 }

@@ -2,6 +2,7 @@
 #include <Day8.h>
 #include <Day8Data.h>
 #include <SharedMemory.h>
+#include <Utils.h>
 
 #include <etl/algorithm.h>
 #include <etl/map.h>
@@ -22,7 +23,7 @@ struct Edge {
   bool operator<(const Edge &other) const { return distSq < other.distSq; }
 };
 
-int solve_day8_part1() {
+long long solve_day8_part1() {
   struct Data {
     etl::vector<JunctionBox, 1000> boxes;
     etl::vector<Edge, 1000> top_edges;
@@ -96,10 +97,10 @@ int solve_day8_part1() {
   for (const auto &edge : max_heap)
     unite(edge.u, edge.v);
 
-  long top[3] = {0};
+  long long top[3] = {0};
   for (int i = 0; i < d.boxes.size(); i++) {
     if (d.parent[i] == i) { // If is reference node
-      long s = d.circuit_size[i];
+      long long s = d.circuit_size[i];
       if (s > top[0]) {
         top[2] = top[1];
         top[1] = top[0];
@@ -116,7 +117,7 @@ int solve_day8_part1() {
   return top[0] * top[1] * top[2];
 }
 
-int solve_day8_part2() {
+long long solve_day8_part2() {
   struct Data {
     etl::vector<JunctionBox, 1000> boxes;
     etl::vector<Edge, 4000> top_edges;
@@ -217,19 +218,15 @@ int solve_day8_part2() {
       break;
   }
 
-  return final_boxes[0].x * final_boxes[1].x;
+  return (long long)final_boxes[0].x * final_boxes[1].x;
 }
 
 void solve_day8() {
   unsigned long start_time = millis();
-  int part1_ans = solve_day8_part1();
-  Serial.print("Day 8 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part1_ans = solve_day8_part1();
+  print_and_send_solution(8, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
-  int part2_ans = solve_day8_part2();
-  Serial.print("Day 8 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part2_ans = solve_day8_part2();
+  print_and_send_solution(8, 2, part2_ans, millis() - start_time);
 }

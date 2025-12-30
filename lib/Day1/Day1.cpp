@@ -1,12 +1,13 @@
 #include <Arduino.h>
 #include <Day1.h>
 #include <Day1Data.h>
+#include <Utils.h>
 
-int solve_day1_part1() {
+long long solve_day1_part1() {
   const char *ptr = day1_data;
 
   String buffer = "";
-  int zero_count = 0;
+  long long zero_count = 0;
   int dial_position = 50;
   bool is_add;
 
@@ -45,11 +46,11 @@ int solve_day1_part1() {
   return zero_count;
 }
 
-int solve_day1_part2() {
+long long solve_day1_part2() {
   const char *ptr = day1_data;
 
   String buffer = "";
-  int zero_count = 0;
+  long long zero_count = 0;
   int dial_position = 50;
   bool is_add;
 
@@ -91,14 +92,10 @@ int solve_day1_part2() {
 
 void solve_day1() {
   unsigned long start_time = millis();
-  int part1_solution = solve_day1_part1();
-  Serial.print("Day 1 Part 1 Solution: ");
-  Serial.print(part1_solution);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part1_solution = solve_day1_part1();
+  print_and_send_solution(1, 1, part1_solution, millis() - start_time);
 
   start_time = millis();
-  int part2_solution = solve_day1_part2();
-  Serial.print("Day 1 Part 2 Solution: ");
-  Serial.print(part2_solution);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part2_solution = solve_day1_part2();
+  print_and_send_solution(1, 2, part2_solution, millis() - start_time);
 }

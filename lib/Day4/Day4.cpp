@@ -2,18 +2,19 @@
 #include <Day4.h>
 #include <Day4Data.h>
 #include <SharedMemory.h>
+#include <Utils.h>
 
 #include <etl/algorithm.h>
 #include <etl/string.h>
 #include <etl/vector.h>
 
-int solve_day4_part1() {
+long long solve_day4_part1() {
   using RollArray = etl::vector<etl::string<136>, 136>;
   StaticMemoryBuffer<RollArray> roll_array_wrapper;
   auto &roll_array = *roll_array_wrapper;
   etl::string<136> buffer;
 
-  int movable_rolls = 0;
+  long long movable_rolls = 0;
 
   // Construct matrix
   for (const char *p = day4_data; *p != 0; p++) {
@@ -62,13 +63,13 @@ int solve_day4_part1() {
   return movable_rolls;
 }
 
-int solve_day4_part2() {
+long long solve_day4_part2() {
   using RollArray = etl::vector<etl::string<136>, 136>;
   StaticMemoryBuffer<RollArray> roll_array_wrapper;
   auto &roll_array = *roll_array_wrapper;
   etl::string<136> buffer;
 
-  int movable_rolls = 0;
+  long long movable_rolls = 0;
 
   // Construct matrix
   for (const char *p = day4_data; *p != 0; p++) {
@@ -129,14 +130,10 @@ int solve_day4_part2() {
 
 void solve_day4() {
   unsigned long start_time = millis();
-  int part1_ans = solve_day4_part1();
-  Serial.print("Day 4 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part1_ans = solve_day4_part1();
+  print_and_send_solution(4, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
-  int part2_ans = solve_day4_part2();
-  Serial.print("Day 4 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part2_ans = solve_day4_part2();
+  print_and_send_solution(4, 2, part2_ans, millis() - start_time);
 }

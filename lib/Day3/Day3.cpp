@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Day3.h>
 #include <Day3Data.h>
+#include <Utils.h>
 
 #include <etl/algorithm.h>
 #include <etl/string.h>
@@ -18,9 +19,9 @@ static long long ipow(int base, int exp) {
   return result;
 }
 
-int solve_day3_part1() {
+long long solve_day3_part1() {
   etl::string<101> buffer;
-  int total_joltage = 0;
+  long long total_joltage = 0;
 
   for (const char *p = day3_data; *p != 0; p++) {
     char c = *p;
@@ -102,14 +103,10 @@ long long solve_day3_part2() {
 
 void solve_day3() {
   unsigned long start_time = millis();
-  int part1_ans = solve_day3_part1();
-  Serial.print("Day 3 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part1_ans = solve_day3_part1();
+  print_and_send_solution(3, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
   long long part2_ans = solve_day3_part2();
-  Serial.print("Day 3 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(3, 2, part2_ans, millis() - start_time);
 }

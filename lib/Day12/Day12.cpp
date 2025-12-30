@@ -2,6 +2,7 @@
 #include <Day12.h>
 #include <Day12Data.h>
 #include <SharedMemory.h>
+#include <Utils.h>
 
 #include <etl/string.h>
 #include <etl/to_arithmetic.h>
@@ -96,7 +97,5 @@ long long solve_day12_part1() {
 void solve_day12() {
   unsigned long start_time = millis();
   long long part1_ans = solve_day12_part1();
-  Serial.print("Day 12 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(12, 1, part1_ans, millis() - start_time);
 }

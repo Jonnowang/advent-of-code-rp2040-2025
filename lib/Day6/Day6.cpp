@@ -2,6 +2,7 @@
 #include <Day6.h>
 #include <Day6Data.h>
 #include <SharedMemory.h>
+#include <Utils.h>
 
 #include <etl/algorithm.h>
 #include <etl/string.h>
@@ -111,11 +112,8 @@ long long solve_day6_part2() {
   etl::vector<long long, 6> ll_buffer;
 
   for (int i = d.data[0].size() - 1; i >= 0; --i) {
-    while (d.data[0][i] != ' ' || d.data[1][i] != ' ' || d.data[2][i] != ' ' ||
-           d.data[3][i] != ' ') {
-      if (i < 0)
-        break;
-
+    while (i >= 0 && (d.data[0][i] != ' ' || d.data[1][i] != ' ' || d.data[2][i] != ' ' ||
+                      d.data[3][i] != ' ')) {
       etl::string<10> column_str;
 
       for (size_t r = 0; r < d.data.size(); r++) {
@@ -143,13 +141,9 @@ long long solve_day6_part2() {
 void solve_day6() {
   unsigned long start_time = millis();
   long long part1_ans = solve_day6_part1();
-  Serial.print("Day 6 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(6, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
   long long part2_ans = solve_day6_part2();
-  Serial.print("Day 6 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(6, 2, part2_ans, millis() - start_time);
 }

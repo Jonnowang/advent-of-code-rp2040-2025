@@ -42,6 +42,8 @@ Day 11 Part 2 Solution: XYZ --- Time: 3029 ms
 Day 12 Solution: 595 --- Time: 53 ms
 ```
 
+![AoC on a Microcontroller](images/AoC_MCU.gif)
+
 ## Hardware: Arduino Nano RP2040 Connect
 
 This project targets the **Arduino Nano RP2040 Connect**.

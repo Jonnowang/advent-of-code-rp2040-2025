@@ -2,6 +2,7 @@
 #include <Day7.h>
 #include <Day7Data.h>
 #include <SharedMemory.h>
+#include <Utils.h>
 
 #include <etl/algorithm.h>
 #include <etl/map.h>
@@ -10,48 +11,51 @@
 #include <etl/to_arithmetic.h>
 #include <etl/vector.h>
 
-int solve_day7_part1() {
-  using DataVec = etl::vector<etl::string<150>, 300>;
-  StaticMemoryBuffer<DataVec> data_wrapper;
+long long solve_day7_part1() {
+  struct Data {
+    etl::vector<etl::string<150>, 300> data;
+    etl::set<int, 150> split_idxs;
+    etl::set<int, 150> idx_buffer;
+  };
+  StaticMemoryBuffer<Data> data_wrapper;
   auto& data = *data_wrapper;
 
   etl::string<150> buffer;
-  etl::set<int, 150> split_idxs;
 
-  int split_count = 0;
+  long long split_count = 0;
 
   for (const char *p = day7_data; *p != 0; p++) {
     char c = *p;
 
     if (c == '\n' && !buffer.empty()) {
-      data.push_back(buffer);
+      data.data.push_back(buffer);
       buffer = "";
     } else {
       buffer += c;
     }
   }
 
-  for (auto i = 0; i < data.size(); ++i) {
+  for (auto i = 0; i < data.data.size(); ++i) {
     // If it is the first row
-    if (split_idxs.empty()) {
-      for (auto j = 0; j < data[0].size(); ++j) {
-        if (data[i][j] == 'S') {
-          split_idxs.insert(j);
+    if (data.split_idxs.empty()) {
+      for (auto j = 0; j < data.data[0].size(); ++j) {
+        if (data.data[i][j] == 'S') {
+          data.split_idxs.insert(j);
         }
       }
     } else {
-      etl::set<int, 150> idx_buffer;
-      for (auto j = split_idxs.begin(); j != split_idxs.end(); ++j) {
+      data.idx_buffer.clear();
+      for (auto j = data.split_idxs.begin(); j != data.split_idxs.end(); ++j) {
         int j_idx = *j;
-        if (data[i][j_idx] == '^') {
-          idx_buffer.insert(j_idx + 1);
-          idx_buffer.insert(j_idx - 1);
+        if (data.data[i][j_idx] == '^') {
+          data.idx_buffer.insert(j_idx + 1);
+          data.idx_buffer.insert(j_idx - 1);
           split_count++;
         } else {
-          idx_buffer.insert(j_idx);
+          data.idx_buffer.insert(j_idx);
         }
       }
-      split_idxs = idx_buffer;
+      data.split_idxs = data.idx_buffer;
     }
   }
 
@@ -59,14 +63,19 @@ int solve_day7_part1() {
 }
 
 long long solve_day7_part2() {
-  using DataVec = etl::vector<etl::string<150>, 300>;
-  StaticMemoryBuffer<DataVec> data_wrapper;
+  struct Data {
+    etl::vector<etl::string<150>, 300> data;
+    etl::map<int, long long, 150> split_idxs;
+    etl::map<int, long long, 150> idx_buffer;
+  };
+  StaticMemoryBuffer<Data> data_wrapper;
   auto& data = *data_wrapper;
 
   etl::string<150> buffer;
-  etl::map<int, long long, 150> split_idxs;
+
+  // Initialize split_idxs map with 0s
   for (int i = 0; i < 150; ++i) {
-    split_idxs[i] = 0LL;
+    data.split_idxs[i] = 0LL;
   }
 
   long long total_splits = 0;
@@ -75,42 +84,43 @@ long long solve_day7_part2() {
     char c = *p;
 
     if (c == '\n' && !buffer.empty()) {
-      data.push_back(buffer);
+      data.data.push_back(buffer);
       buffer = "";
     } else {
       buffer += c;
     }
   }
 
-  for (auto i = 0; i < data.size(); ++i) {
+  for (auto i = 0; i < data.data.size(); ++i) {
     // If it is the first row
     if (i == 0) {
-      for (auto j = 0; j < data[0].size(); ++j) {
-        if (data[i][j] == 'S') {
-          split_idxs[j] = 1;
+      for (auto j = 0; j < data.data[0].size(); ++j) {
+        if (data.data[i][j] == 'S') {
+          data.split_idxs[j] = 1;
         }
       }
     } else {
-      etl::map<int, long long, 150> idx_buffer;
-      for (int i = 0; i < 150; ++i) {
-        idx_buffer[i] = 0LL;
+      data.idx_buffer.clear();
+      for (int k = 0; k < 150; ++k) {
+        data.idx_buffer[k] = 0LL;
       }
-      for (const auto &item : split_idxs) {
+
+      for (const auto &item : data.split_idxs) {
         if (item.second == 0) {
           continue;
         }
-        if (data[i][item.first] == '^') {
-          idx_buffer[item.first + 1] += item.second;
-          idx_buffer[item.first - 1] += item.second;
+        if (data.data[i][item.first] == '^') {
+          data.idx_buffer[item.first + 1] += item.second;
+          data.idx_buffer[item.first - 1] += item.second;
         } else {
-          idx_buffer[item.first] += item.second;
+          data.idx_buffer[item.first] += item.second;
         }
       }
-      split_idxs = idx_buffer;
+      data.split_idxs = data.idx_buffer;
     }
   }
 
-  for (const auto &item : split_idxs) {
+  for (const auto &item : data.split_idxs) {
     total_splits += item.second;
   }
 
@@ -119,14 +129,10 @@ long long solve_day7_part2() {
 
 void solve_day7() {
   unsigned long start_time = millis();
-  int part1_ans = solve_day7_part1();
-  Serial.print("Day 7 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  long long part1_ans = solve_day7_part1();
+  print_and_send_solution(7, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
   long long part2_ans = solve_day7_part2();
-  Serial.print("Day 7 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(7, 2, part2_ans, millis() - start_time);
 }

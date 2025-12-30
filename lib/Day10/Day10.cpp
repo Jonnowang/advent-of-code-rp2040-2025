@@ -2,6 +2,7 @@
 #include <Day10.h>
 #include <Day10Data.h>
 #include <SharedMemory.h>
+#include <Utils.h>
 
 #include <etl/bitset.h>
 #include <etl/map.h>
@@ -347,13 +348,9 @@ long long solve_day10_part2() {
 void solve_day10() {
   unsigned long start_time = millis();
   long long part1_ans = solve_day10_part1();
-  Serial.print("Day 10 Part 1 Solution: ");
-  Serial.print(part1_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(10, 1, part1_ans, millis() - start_time);
 
   start_time = millis();
   long long part2_ans = solve_day10_part2();
-  Serial.print("Day 10 Part 2 Solution: ");
-  Serial.print(part2_ans);
-  Serial.printf(" --- Time: %lu ms\n", millis() - start_time);
+  print_and_send_solution(10, 2, part2_ans, millis() - start_time);
 }
